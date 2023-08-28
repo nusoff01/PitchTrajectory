@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "//nusoff01.github.io/PitchTrajectory/static/css/main.af2ac6a6.css",
+    "main.js": "//nusoff01.github.io/PitchTrajectory/static/js/main.12bf3ea8.js",
+    "static/js/787.dcdd7d3f.chunk.js": "//nusoff01.github.io/PitchTrajectory/static/js/787.dcdd7d3f.chunk.js",
+    "index.html": "//nusoff01.github.io/PitchTrajectory/index.html",
+    "main.af2ac6a6.css.map": "//nusoff01.github.io/PitchTrajectory/static/css/main.af2ac6a6.css.map",
+    "main.12bf3ea8.js.map": "//nusoff01.github.io/PitchTrajectory/static/js/main.12bf3ea8.js.map",
+    "787.dcdd7d3f.chunk.js.map": "//nusoff01.github.io/PitchTrajectory/static/js/787.dcdd7d3f.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.af2ac6a6.css",
+    "static/js/main.12bf3ea8.js"
+  ]
+}
