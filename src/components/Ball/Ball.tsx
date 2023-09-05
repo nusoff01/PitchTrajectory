@@ -38,6 +38,7 @@ interface BallInterface {
     xCoefficients: [number, number, number], 
     yCoefficients: [number, number, number], 
     zCoefficients: [number, number, number],
+    texture: any,
     onHover?: any,
     onClick?: any
 }
@@ -48,6 +49,7 @@ export function Ball ({
     xCoefficients,
     yCoefficients,
     zCoefficients,
+    texture,
     onHover,
     onClick
 }: BallInterface): JSX.Element {
@@ -119,19 +121,20 @@ export function Ball ({
     return (
         <>
             <mesh 
+            castShadow
                 ref={meshRef}
                 onClick={() => { 
                     setPathIsVisible(!pathIsVisible)
                 }}
             >
                 <sphereGeometry args={[baseballDiameter, 20, 20]} />
-                <meshNormalMaterial />
+                <meshStandardMaterial map={texture}/>
             </mesh>
             <CatmullRomLine
                 visible={pathIsVisible}
                 points={flightPathLine}
                 lineWidth={2}
-                color={'rgba(0,100,100,0.4)'}
+                color={'#880000'}
             />
         </>
     );

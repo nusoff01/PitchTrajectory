@@ -1,7 +1,7 @@
-import { Camera, Canvas, useThree } from 'react-three-fiber';
+import { Camera, Canvas, useLoader, useThree } from 'react-three-fiber';
 import { Ball } from '../Ball/Ball';
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { PerspectiveCamera, Vector3, Mesh, Group } from 'three';
+import { Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { PerspectiveCamera, Vector3, Mesh, Group, TextureLoader, CircleGeometry } from 'three';
 import { Strikezone } from '../Strikezone/Strikezone';
 import { OrbitControls } from '@react-three/drei/core';
 import { PITCH_PERSPECTIVE, pitchPerspectiveMap } from '../../App';
@@ -162,22 +162,62 @@ interface BallFieldProps {
 }
 
 export function BallField({pitchPerspective}: BallFieldProps): JSX.Element {
+    const texture = useLoader(TextureLoader, 'ballTexture2.jpg');
     return (
-        <group>
-            <CameraPosition pitchPerspective={pitchPerspective}/>
-            <ambientLight/>
-            <pointLight position={[0,5,0]}/>
-                {pitches.map((p: any, pI: number) => {
-                    return <Ball
-                        perspective={pitchPerspective}
-                        key={pI}
-                        timeOffset={pI * 2 + 1}
-                        xCoefficients={p.x}
-                        yCoefficients={p.y}
-                        zCoefficients={p.z}
-                    />;
-                })}
-            <Strikezone/>
-        </group>
-  );
+        <Suspense fallback={null}>
+            <group>
+                <CameraPosition pitchPerspective={pitchPerspective}/>
+                {/* <OrbitControls/> */}
+                <ambientLight/>
+                <spotLight
+                    position={[2, 5, 2]}
+                    color="#ffffff"
+                    intensity={2.5}
+                    shadow-mapSize-height={1024}
+                    shadow-mapSize-width={1024}
+                    shadow-camera-far={50}
+                    shadow-camera-left={-10}
+                    shadow-camera-right={10}
+                    shadow-camera-top={10}
+                    shadow-camera-bottom={-10}
+                    castShadow
+                />
+                <pointLight position={[0,5,0]}/>
+                    {pitches.map((p: any, pI: number) => {
+                        return <Ball
+                            texture={texture}
+                            perspective={pitchPerspective}
+                            key={pI}
+                            timeOffset={pI * 2 + 1}
+                            xCoefficients={p.x}
+                            yCoefficients={p.y}
+                            zCoefficients={p.z}
+                        />;
+                    })}
+                <Strikezone/>
+                <Ground/>
+            </group>
+        </Suspense>
+    );
+}
+
+function Ground () {
+    return <mesh rotation={[-Math.PI / 2,0,0]}>
+        <Grass/>
+        <HitterCircle/>
+    </mesh>;
+}
+
+function Grass () {
+    return <mesh receiveShadow position={[0,-60,0]} rotation={[0,0,Math.PI / 4]}>
+        <planeGeometry attach="geometry" args={[90, 90]}/>
+        <meshStandardMaterial attach="material" color="#66AA44" />
+    </mesh>;
+}
+
+function HitterCircle () {
+    return <mesh receiveShadow position={[0,0,0.1]}>
+        <circleGeometry args={[10,60]} />
+        <meshStandardMaterial color='#C2B280'/>
+    </mesh>;
 }
